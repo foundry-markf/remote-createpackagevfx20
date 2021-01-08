@@ -18,6 +18,7 @@ def _main():
     parser.add_argument(
         "--server", required=False, default="https://jenkins-staging.thefoundry.co.uk"
     )
+    parser.add_argument("--job", required=False, default="CreatePackageVFX2020Staging")
     parser.add_argument("--user", required=True)
     parser.add_argument("--recipe-dir", required=True)
     args = parser.parse_args()
@@ -70,9 +71,7 @@ def _main():
         "vcs_path": "git@gitlab.thefoundry.co.uk:libraries/conan/recipes.git",
         "conan_recipe_path": args.recipe_dir,
     }
-    queue_item_number = server.build_job(
-        "CreatePackageVFX2020Staging", parameters=params
-    )
+    queue_item_number = server.build_job(args.job, parameters=params)
     queued_item = server.get_queue_item(queue_item_number)
     logging.debug("Queued job: %s", pprint.pformat(queued_item, compact=True))
 
